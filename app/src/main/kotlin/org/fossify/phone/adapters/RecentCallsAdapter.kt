@@ -471,7 +471,13 @@ class RecentCallsAdapter(
                 }
 
                 itemRecentsNumber.apply {
-                    text = call.phoneNumber.formatPhoneNumber()
+                    var numberToShow = SpannableString(call.phoneNumber.formatPhoneNumber())
+
+                    if (textToHighlight.isNotEmpty() && text.contains(textToHighlight, true)) {
+                        numberToShow = SpannableString(text.toString().highlightTextPart(textToHighlight, properPrimaryColor))
+                    }
+
+                    text = numberToShow
                     setTextColor(textColor)
                     setTextSize(TypedValue.COMPLEX_UNIT_PX, currentFontSize * 0.8f)
                     beVisibleIf(matchingContact != null)
